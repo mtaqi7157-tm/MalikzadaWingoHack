@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"><title>Malik ZADA Team </title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+
+
+:root {
+  --bg: #070b14;
+  --panel: #101a2b;
+  --gold: #f5c451;
+  --cyan: #00d9ff;
+  --white: #f5f7fb;
+  --muted: #91a2b8;
+  --green: #20d995;
+  --red: #ff526b;
+  --border: rgba(255,255,255,.09);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--white);
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background:
+    radial-gradient(ellipse at 10% 0%, #15354a 0%, transparent 42%),
+    radial-gradient(ellipse at 95% 90%, #382511 0%, transparent 38%),
+    #070b14;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .12;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 30px 30px;
+  animation: backgroundMove 40s linear infinite;
+}
+
+@keyframes backgroundMove {
+  from { background-position: 0 0; }
+  to { background-position: 300px 400px; }
+}
+
+/* LOGIN SCREENS */
+
+#login-overlay,
+#uid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 15px;
+  background:
+    radial-gradient(ellipse at 50% 20%, #1c3b50 0%, transparent 55%),
+    #070b14;
+}
+
+#uid-overlay {
+  z-index: 999;
+}
+
+.box {
+  width: 90%;
+  max-width: 370px;
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  font-family: Orbitron, sans-serif;
+  font-weight: 900;
+  background: linear-gradient(145deg,#172940,#0b1220);
+  backdrop-filter: blur(15px);
+}
+
+.vip-box {
+  color: var(--gold);
+  border: 1px solid #f5c45180;
+  font-size: 21px;
+  box-shadow: 0 0 35px #f5c45120;
+  margin-bottom: 22px;
+}
+
+.join-box {
+  color: var(--green);
+  border: 1px solid #20d99580;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 0 25px #20d99515;
+  margin-bottom: 30px;
+  transition: .3s;
+}
+
+.join-box:active {
+  transform: scale(.96);
+}
+
+#login-overlay input,
+#uid-overlay input {
+  width: 90%;
+  max-width: 340px;
+  padding: 17px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  border: 1px solid #40546d;
+  outline: none;
+  background: #111d2e;
+  color: white;
+  font-size: 17px;
+  text-align: center;
+  box-shadow: inset 0 3px 12px #0005;
+  transition: .3s;
+}
+
+#login-overlay input:focus,
+#uid-overlay input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px #00d9ff25;
+}
+
+#login-overlay button,
+#uid-overlay button {
+  min-width: 200px;
+  padding: 16px 35px;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(135deg,#ffe18a,#d99a27);
+  color: #111;
+  font-family: Orbitron,sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #f5c45130;
+  transition: .25s;
+}
+
+#login-overlay button:active,
+#uid-overlay button:active {
+  transform: scale(.95);
+}
+
+.neon-title {
+  font-family: Orbitron,sans-serif;
+  font-size: 18px;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 28px;
+  text-shadow: 0 0 18px #f5c45150;
+}
+
+/* MAIN APP */
+
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: none;
+  background: transparent;
+}
+
+.custom-header {
+  position: relative;
+  width: 100%;
+  padding: 25px 12px;
+  text-align: center;
+  background: linear-gradient(135deg,rgba(17,30,49,.98),rgba(9,17,30,.96));
+  border-bottom: 1px solid #f5c45145;
+  box-shadow: 0 10px 35px #0007;
+}
+
+.custom-header::after {
+  content: "";
+  display: block;
+  width: 85px;
+  height: 2px;
+  margin: 15px auto 0;
+  background: linear-gradient(90deg,transparent,var(--gold),transparent);
+  box-shadow: 0 0 12px var(--gold);
+}
+
+.main-name {
+  font-family: Orbitron,sans-serif;
+  font-size: clamp(22px,6vw,31px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 0 0 20px #f5c45145;
+}
+
+.wp-num {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 9px;
+  letter-spacing: 1px;
+}
+
+/* DASHBOARD */
+
+.abox {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 115px);
+  padding: 17px;
+  max-width: 520px;
+  margin: auto;
+  gap: 14px;
+}
+
+.abox > div:first-child button {
+  background: linear-gradient(135deg,#32151f,#1a101a) !important;
+  border: 1px solid #a23d55 !important;
+  color: var(--red) !important;
+  border-radius: 10px !important;
+  padding: 9px 19px !important;
+  font-weight: bold;
+  box-shadow: 0 4px 15px #ff526b15;
+  transition: .25s;
+}
+
+.abox > div:first-child button:active {
+  transform: scale(.94);
+}
+
+/* TABS */
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 8px;
+  text-align: center;
+  border-radius: 13px;
+  background: linear-gradient(145deg,#17253a,#101827);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: Orbitron,sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.tab.active {
+  background: linear-gradient(135deg,#e6ad3f,#ffe59a);
+  color: #111;
+  border-color: var(--gold);
+  box-shadow: 0 5px 22px #f5c45135;
+  transform: translateY(-2px);
+}
+
+/* RESULT CARD */
+
+.card {
+  position: relative;
+  min-height: 190px;
+  height: 190px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%,#263c53,transparent 70%),
+    linear-gradient(145deg,#17283d,#0c1421);
+  border: 1px solid #61748c70;
+  border-radius: 21px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px #0007,inset 0 1px 0 #ffffff12;
+  margin-bottom: 5px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,transparent,var(--gold),var(--cyan),transparent);
+  box-shadow: 0 0 15px var(--cyan);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid #ffffff08;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.period {
+  color: var(--cyan);
+  font-family: Orbitron,sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.timer {
+  color: white;
+  font-family: Orbitron,sans-serif;
+  font-size: clamp(38px,12vw,52px);
+  font-weight: 900;
+  line-height: 1.2;
+  text-shadow: 0 0 20px #00d9ff40;
+}
+
+.ptxt {
+  color: var(--gold);
+  font-family: Orbitron,sans-serif;
+  font-size: 38px;
+  font-weight: 900;
+  margin: 8px 0;
+  text-shadow: 0 0 18px #f5c45135;
+}
+
+.blur-box {
+  filter: blur(4px);
+  opacity: .4;
+}
+
+.timer-fit {
+  font-size: 65px !important;
+  position: absolute;
+}
+
+/* ALERT */
+
+#trade-alert {
+  position: absolute;
+  top: 30%;
+  right: -100%;
+  width: 100%;
+  height: 60px;
+  background: rgba(7,15,24,.98);
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  box-shadow: 0 0 25px #20d99535;
+  color: white;
+  font-family: Orbitron,sans-serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: .8s;
+}
+
+.animate-slide {
+  animation: slideProcess 4s forwards;
+}
+
+@keyframes slideProcess {
+  0% { right: -100%; }
+  40% { right: 0%; }
+  70% { right: 0%; }
+  100% { right: 100%; }
+}
+
+/* HISTORY */
+
+.hbox {
+  flex-grow: 1;
+  min-height: 150px;
+  background: linear-gradient(145deg,#101b2b,#0a111e);
+  border: 1px solid #ffffff15;
+  border-radius: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) #101722;
+  box-shadow: 0 10px 30px #0005;
+}
+
+.hbox::-webkit-scrollbar {
+  width: 5px;
+}
+
+.hbox::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--gold),#b77a19);
+  border-radius: 10px;
+}
+
+.hhead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  background: linear-gradient(135deg,#23364d,#172438);
+  padding: 15px 8px;
+  color: var(--gold);
+  font-family: Orbitron,sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #52647a70;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: 14px 8px;
+  border-bottom: 1px solid #ffffff0c;
+  font-size: 12px;
+  transition: background .2s;
+}
+
+.row:hover {
+  background: #1c2c40;
+}
+
+.col {
+  flex: 1;
+  text-align: center;
+  color: #c8d3e1;
+}
+
+.win {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.loss {
+  color: var(--red);
+  font-weight: bold;
+}
+
+/* SMOOTH ANIMATIONS */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card,.tabs,.hbox {
+  animation: fadeUp .6s ease both;
+}
+
+/* MOBILE */
+
+@media(max-width:480px) {
+  .abox {
+    padding: 12px;
+    gap: 11px;
+  }
+
+  .custom-header {
+    padding: 19px 10px;
+  }
+
+  .main-name {
+    font-size: 23px;
+  }
+
+  .card {
+    min-height: 175px;
+    height: 175px;
+  }
+
+  .hhead {
+    font-size: 9px;
+  }
+
+  .row {
+    padding: 13px 5px;
+    font-size: 11px;
+  }
+
+  .tab {
+    padding: 14px 5px;
+    font-size: 10px;
+  }
+}
+
+@media(max-height:650px) {
+  #login-overlay {
+    padding-top: 20px;
+  }
+
+  .box {
+    min-height: 65px;
+    margin-bottom: 12px;
+  }
+
+  .abox {
+    min-height: calc(100vh - 90px);
+    padding: 8px;
+  }
+
+  .card {
+    height: 145px;
+    min-height: 145px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+.whatsapp-box {
+  width: 90%;
+  max-width: 260px;
+  min-height: 48px;
+  margin: 0 auto 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 15px;
+  background: linear-gradient(135deg,#25D366,#128C7E);
+  border: 1px solid #55ed91;
+  color: white;
+  font-family: Orbitron,sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #25D36635;
+  transition: .3s ease;
+}
+
+.whatsapp-box img {
+  width: 29px;
+  height: 29px;
+  display: block;
+}
+
+.whatsapp-box:active {
+  transform: scale(.96);
+}
+
+</style>
+</head>
+<body>
+  <div id="login-overlay"><div class="box vip-box">Malik Zada Team</div><div class="box join-box" onclick="window.open('https://whatsapp.com/channel/0029Vb7IeCEJkK7HsGOJGN2a')">JOIN CHANNEL</div><input type="password" id="pass" placeholder="Enter Password"><button onclick="checkPass()">START</button></div>
+  <div id="uid-overlay"><div class="neon-title">ENTER YOUR GAME UID</div><input type="text" id="game-uid" placeholder="Game UID"><button onclick="goToMain()">NEXT</button></div>
+  <div id="app">
+    <div class="custom-header"><h1 class="main-name">Malik Zada</h1><div class="wp-num">WhatsApp: 923259625573</div>
+    <div class="whatsapp-box" onclick="window.open('https://whatsapp.com/channel/0029Vb7IeCEJkK7HsGOJGN2a','_blank')">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  <span>Follow Our Channel</span>
+</div></div>
+    <div class="abox">
+      <div style="text-align: right;"><button onclick="clr()" style="font-size:12px; background:#330000; color:#ff0000; border:1px solid #ff0000; padding:5px 15px; border-radius:5px; cursor:pointer;">CLEAN</button></div>
+      <div class="tabs"><div id="t30" class="tab active" onclick="setMode('30S')">WinGo 30S</div><div id="t60" class="tab" onclick="setMode('1M')">WinGo 1M</div></div>
+      <div class="card" id="main-card">
+        <div id="trade-alert"></div>
+        <div id="pid" class="period">SYNCING...</div>
+        <div id="tmr" class="timer">00:00</div>
+        <div id="pbx" class="ptxt">--</div>
+      </div>
+      <div class="hbox"><div class="hhead"><div class="col">PERIOD</div><div class="col">PRED</div><div class="col">RES</div><div class="col">STATUS</div></div><div id="hl"></div></div>
+    </div>
+  </div>
+<script>
+let stage = 1, winStreak = 0; let dataStore = { '30S': { history: [], lastP: "", lastR: "" }, '1M': { history: [], lastP: "", lastR: "" } };
+let currentMode = '30S';
+function checkPass(){ if(document.getElementById('pass').value === "Malikzada5566"){ document.getElementById('login-overlay').style.display = 'none'; document.getElementById('uid-overlay').style.display = 'flex'; } else { alert("Wrong Password!"); } }
+function goToMain(){ if(document.getElementById('game-uid').value.length === 6){ document.getElementById('uid-overlay').style.display = 'none'; document.getElementById('app').style.display = 'block'; } else { alert("Wrong UID!"); } }
+function showTradeAlert(msg) { const alertBox = document.getElementById('trade-alert'); alertBox.innerText = msg; alertBox.classList.add('animate-slide'); setTimeout(() => { alertBox.classList.remove('animate-slide'); }, 4000); }
+function setMode(m){ currentMode = m; document.getElementById('t30').className = (m === '30S') ? 'tab active' : 'tab'; document.getElementById('t60').className = (m === '1M') ? 'tab active' : 'tab'; renderHistory(); _sy(); }
+async function _sy(){
+    try{
+        const r = await fetch((currentMode === '30S' ? 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json' : 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json') + "?t=" + Date.now());
+        const d = await r.json();
+        const list = d.data.list; const latest = list[0];
+        let trend = null; if(list.length >= 4) { let last3 = list.slice(1, 4).map(i => parseInt(i.number) >= 5 ? 'BIG' : 'SMALL'); if(last3.every(val => val === last3[0])) trend = last3[0]; }
+        const currentP = (BigInt(latest.issueNumber) + 1n).toString();
+        if(dataStore[currentMode].lastP !== "" && dataStore[currentMode].lastP !== currentP){
+            const finished = list[0]; const res = (parseInt(finished.number) >= 5) ? 'BIG' : 'SMALL';
+            const isWin = (dataStore[currentMode].lastR === res);
+            if(isWin) { winStreak++; stage = 1; showTradeAlert(winStreak > 1 ? `BACK-TO-BACK ${winStreak} WIN` : "WIN: ALL STAGES DONE"); }
+            else { winStreak = 0; stage++; showTradeAlert(`STAGE ${stage}: ${parseInt(latest.number) % 2 === 0 ? "BIG " : "SMALL "}${stage}X`); }
+            dataStore[currentMode].history.unshift({ p: dataStore[currentMode].lastP.slice(-3), r: dataStore[currentMode].lastR, res: res, status: isWin ? 'WIN' : 'LOSS' });
+            if(dataStore[currentMode].history.length > 10) dataStore[currentMode].history.pop();
+            renderHistory(); if(isWin) confetti();
+        }
+        dataStore[currentMode].lastP = currentP; dataStore[currentMode].lastR = trend ? trend : (parseInt(latest.number) % 2 === 0 ? 'BIG' : 'SMALL');
+        document.getElementById('pid').innerHTML = `PERIOD: ${currentP.slice(-3)}`; document.getElementById('pbx').innerText = dataStore[currentMode].lastR;
+    }catch(e){}
+}
+function renderHistory(){ document.getElementById('hl').innerHTML = dataStore[currentMode].history.map(item => `<div class="row"><div class="col">${item.p}</div><div class="col">${item.r}</div><div class="col">${item.res}</div><div class="col ${item.status === 'WIN' ? 'win' : 'loss'}">${item.status}</div></div>`).join(''); }
+function clr(){ dataStore[currentMode].history = []; renderHistory(); }
+setInterval(()=>{
+    const s = (currentMode === '30S' ? 30 : 60) - (new Date().getSeconds() % (currentMode === '30S' ? 30 : 60));
+    if (s <= 5 && s > 0) { document.getElementById('tmr').innerText = "0" + s; document.getElementById('tmr').classList.add('timer-fit'); document.getElementById('pid').classList.add('blur-box'); document.getElementById('pbx').classList.add('blur-box'); }
+    else { document.getElementById('tmr').innerText = "00:" + (s < 10 ? "0"+s : s); document.getElementById('tmr').classList.remove('timer-fit'); document.getElementById('pid').classList.remove('blur-box'); document.getElementById('pbx').classList.remove('blur-box'); }
+    if(s === 1) _sy();
+}, 1000);
+_sy();
+</script>
+</body>
+</html>
